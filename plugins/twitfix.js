@@ -20,11 +20,10 @@ exports.run = (client, message) => {
             searchUrl += twitterID;
         }
 	}
-    //console.log(fixedLinks);
         
     searchUrl += "&expansions=attachments.media_keys,author_id&media.fields=url&user.fields";
 
-	//console.log("Querying twitter api for tweet info (" + searchUrl + ")");
+	console.log("Querying twitter api for tweet info (" + searchUrl + ")");
     fetch(searchUrl, {
         method: 'GET',
         headers: {
