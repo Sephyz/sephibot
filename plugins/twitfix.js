@@ -11,6 +11,7 @@ exports.run = (client, message) => {
     for ( var i = 0; i < linksArray.length; ++i ) {
         const twitterID = linksArray[i].replace(/\?.*$/,"").split('/').pop(); // Remove ?s= at the end, split with / and take the last element
 
+        console.log(twitterID);
         if ( twitterID && twitterID.length ) {
             fixedLinks[twitterID] = linksArray[i].replace("https://twitter.com/","https://fxtwitter.com/");
             //console.log("Twitter ID is (" + twitterID.toString() + ")" );
