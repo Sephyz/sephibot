@@ -33,6 +33,7 @@ exports.run = (client, message) => {
     })
     .then(response => response.json())
     .then(data => {
+        console.log(data);
         var twitterIDs = []; // List of tweets to repost
         var imageEmbeds = {}; // Map of image URLs as key to Author info, if more than 1 (to help mobile discord users)
         for ( var j = 0; j < data.includes.media.length; ++j ) {
