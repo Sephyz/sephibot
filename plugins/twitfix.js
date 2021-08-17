@@ -1,6 +1,7 @@
 // Called by bot.js when message has twitter links
 exports.run = (client, message) => {
     const fetch = require('node-fetch');
+    const Discord = require('discord.js');
     const regex = /(https?:\/\/twitter[^\s]+)/g; // Regex to find all twitter links
 
     const linksArray = message.content.match(regex); // All pattern matches in an array of strings
@@ -20,7 +21,8 @@ exports.run = (client, message) => {
         }
 	}
     //console.log(fixedLinks);
-    searchUrl += "&expansions=attachments.media_keys";
+        
+    searchUrl += "&expansions=attachments.media_keys,author_id&media.fields=url&user.fields";
 
 	//console.log("Querying twitter api for tweet info (" + searchUrl + ")");
     fetch(searchUrl, {
@@ -32,17 +34,32 @@ exports.run = (client, message) => {
     .then(response => response.json())
     .then(data => {
         var twitterIDs = []; // List of tweets to repost
+        var imageEmbeds = {}; // Map of image URLs as key to Author info, if more than 1 (to help mobile discord users)
         for ( var j = 0; j < data.includes.media.length; ++j ) {
             if ( data.includes.media[j].type == "video" || data.includes.media[j].type == "animated_gif" ) {
                 // Found a video/gif, find the tweet id by searching one that contain this video/gif's media key
                 for ( var k = 0; k < data.data.length; ++k ) {
                     if (  data.data[k].attachments.media_keys.includes(data.includes.media[j].media_key) ) {
-                        if ( !twitterIDs.includes(data.data[k].id) ) {
+                        if ( !twitterIDs.includes(data.data[k].id) ) { // Avoid duplicates
                             twitterIDs.push(data.data[k].id);                     
 						}
 					}           
 				}
-			}     
+			}
+            else if ( data.includes.media[j].type == "photo" ) {
+                // Found an image, find the tweet id and username by searching one that contain this image's media key
+                const url = data.includes.media[j].url;
+                for ( var k = 0; k < data.data.length; ++k ) {
+                    if (  data.data[k].attachments.media_keys.includes(data.includes.media[j].media_key) ) {
+                        // Search author's info
+                        for ( var h = 0; h < data.includes.users.length; ++h ) {
+                            if ( data.data[k].author_id === data.includes.users[h].id ) {
+                                imageEmbeds[url] = [data.data[k].id, data.includes.users[h].name, data.includes.users[h].username];
+							}
+						}
+                    }
+                }
+			}
 		}
 
         // Add all tweets with links to the bot message
@@ -55,7 +72,22 @@ exports.run = (client, message) => {
                     console.log("Error: cannot find twitter ID in the fixedLink object");     
 			    }
 		    }
-		    message.channel.send({content: newMessage, allowedMentions: {repliedUser: false}, reply: { messageReference: message }});  
+		    message.channel.send({content: newMessage, allowedMentions: {repliedUser: false}, reply: { messageReference: message }});
+            message.suppressEmbeds(true); // Remove original embeds
+        }
+        
+        // Add all image embeds to an embed with pages to browse through them, if there is more than 1
+        if ( Object.keys(imageEmbeds).length > 1 ) {
+            const paginationEmbed = require('./pagination.js');
+            var embedPages = [];
+            for ( imageUrl in imageEmbeds ) {
+                const embed = new Discord.MessageEmbed()
+                                    .setTitle(imageEmbeds[imageUrl][1] + " (@" + imageEmbeds[imageUrl][2] + ")")
+	                                .setURL("https://twitter.com/tweet/" + imageEmbeds[imageUrl][2] + "/" + imageEmbeds[imageUrl][0] )
+                                    .setImage(imageUrl);
+                embedPages.push(embed);
+		    }
+		    paginationEmbed(message, embedPages, false, 300000);
         }
     });
 }

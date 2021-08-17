@@ -1,3 +1,5 @@
+// Base code from https://github.com/vatovato/gudabot
+
 const { Client, Intents } = require("discord.js");
 
 // Discord.js v13 requires us to pass Intents to specify what events the bot should receive
