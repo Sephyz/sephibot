@@ -19,7 +19,15 @@ fs.readdir("./events/", (err, files) => {
 
 client.on("messageCreate", message => {
     if (message.author.bot) return;
-    if (!message.guild.me.permissionsIn(message.channel).has("SEND_MESSAGES") ) return; // Prevent crashes with commands that send messages in channels where bot doesn't have permissions
+    // Prevent crashes with commands that send messages in channels where bot doesn't have permissions
+    if (!message.guild.me.permissionsIn(message.channel).has("SEND_MESSAGES") ) return;
+
+    // Reply when mentioned
+    if (message.mentions.has(client.user)) {
+        message.channel.send({content: "No memes.", reply: { messageReference: message }});
+        return;
+	}
+
     // Substitute twitter links that contain videos with fxtwitter
     if (message.content.includes("https://twitter.com/")) {
         let twitFix = require(`./plugins/twitfix.js`);
