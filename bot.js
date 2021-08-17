@@ -24,7 +24,8 @@ client.on("messageCreate", message => {
 
     // Reply when mentioned
     if (message.mentions.has(client.user)) {
-        message.channel.send({content: "No memes.", reply: { messageReference: message }});  
+        message.channel.send({content: "No memes.", reply: { messageReference: message }});
+        return;
 	}
 
     // Substitute twitter links that contain videos with fxtwitter
