@@ -1,0 +1,17 @@
+{
+  "name": "sephibot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js"
+  },
+  "engines": {
+    "node": "16.0.0"
+  },
+  "dependencies": {
+    "discord.js": "^13.1.0",
+    "node-fetch": "^2.6.1",
+    "node-gyp": "^8.1.0"
+  }
+}
