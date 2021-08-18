@@ -1,12 +1,14 @@
 // Base code from https://github.com/vatovato/gudabot
 
 const { Client, Intents } = require("discord.js");
+const fs = require("fs");
+const mysql = require('mysql2');
+var pool = mysql.createPool(process.env.JAWSDB_URL);
 
 // Discord.js v13 requires us to pass Intents to specify what events the bot should receive
 // Just give every non-privileged intent for now.
 const botIntents = new Intents(32509);
 const client = new Client({ intents: botIntents });
-const fs = require("fs");
 
 // This loop reads the /events/ folder and attaches each event file to the appropriate event.
 fs.readdir("./events/", (err, files) => {
@@ -36,6 +38,17 @@ client.on("messageCreate", message => {
         twitFix.run(client, message);
         return;
 	}
+
+    // Check if the user has called a command and run the relevant .js
+    if (message.content.indexOf(process.env.PREFIX) !== 0) return;
+    const args = message.content.slice(process.env.PREFIX.length).trim().split(/ +/g);
+    const command = args.shift().toLowerCase();
+    try {
+        let commandFile = require(`./commands/${command}.js`);
+        commandFile.run(client, message, pool, args);
+    } catch (err) {
+        console.error(err);
+    }
 });
 
 client.login(process.env.BOT_TOKEN);
