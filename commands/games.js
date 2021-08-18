@@ -6,7 +6,7 @@ const gamesLogo = "https://pbs.twimg.com/profile_images/1186326995254288385/_LV6
 // Possible arguments
 const gamesCommands = {
 'help': 'help',
-'search': 'search game_name', 
+'search': 'search <game name>', 
 'upcoming': 'upcoming'
 }
 const gamesDetails = {

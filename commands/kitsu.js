@@ -6,15 +6,15 @@ const paginationEmbed = require('./../plugins/pagination.js');
 // Possible arguments
 const kitsuCommands = {
 'help': 'help',
-'anime': 'anime anime_name', 
-'manga': 'manga manga_name',
-'user': 'user username'
+'anime': 'anime <optional: anime name>', 
+'manga': 'manga <optional: manga name>',
+'user': 'user <username>'
 }
 const kitsuDetails = {
 'help': 'Shows a list of available commands',
 'anime': 'Search an anime. If no search terms are given, a random one will be returned', 
-'manga': 'search a manga. If no search terms are given, a random one will be returned',
-'user': 'Shows info about a specific user'
+'manga': 'Search a manga. If no search terms are given, a random one will be returned',
+'user': 'Shows info about a specific kitsu user'
 }
 
 // Called by bot.js when kitsu command is given
