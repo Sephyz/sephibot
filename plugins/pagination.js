@@ -40,7 +40,7 @@ const paginationEmbed = async (msg, pages, authorOnly = false, timeout = 120000,
     );
   if (buttonList.length !== 2) throw new Error("Need two buttons.");
 
-  defaultPage = 0;
+  let page = defaultPage;
 
   const row = new MessageActionRow().addComponents(buttonList);
   const curPage = await msg.channel.send({
