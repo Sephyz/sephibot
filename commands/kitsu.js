@@ -26,7 +26,7 @@ exports.run = (client, message, pool, args) => {
 			handleKitsuCommand(message, commandString, args).then(console.log("API Query succeeded")).catch(e => console.log(e));
 		}
 		else {
-			message.channel.send(`Kitsu: command ${commandString} not recognised.\nUse '!kitsu help' for a list of available commands.`);
+			message.channel.send(`Kitsu: command ${commandString} not recognised.\nUse '!**kitsu help**' for a list of available commands.`);
 		}
 	} 
 	else {

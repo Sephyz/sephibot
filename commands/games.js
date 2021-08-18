@@ -24,7 +24,7 @@ exports.run = (client, message, pool, args) => {
 			handleGamesCommand(message, pool, commandString, args).then().catch(e => console.log(e));
 		}
 		else {
-			message.channel.send(`Games: command ${commandString} not recognised.\nUse '!games help' for a list of available commands.`);
+			message.channel.send(`Games: command ${commandString} not recognised.\nUse '**!games help**' for a list of available commands.`);
 		}
 	} 
 	else {
