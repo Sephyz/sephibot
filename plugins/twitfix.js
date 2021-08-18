@@ -88,7 +88,7 @@ exports.run = (client, message) => {
                                         .setImage(imageUrl);
                     embedPages.push(embed);
 		        }
-		        paginationEmbed(message, embedPages, false, 300000);
+		        paginationEmbed(message, embedPages, false, 300000, 1);
             }
         }
         else { 

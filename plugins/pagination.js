@@ -16,7 +16,7 @@ const {
  * @param {number} timeout
  * @returns
  */
-const paginationEmbed = async (msg, pages, authorOnly = false, timeout = 120000, buttonList = null) => {
+const paginationEmbed = async (msg, pages, authorOnly = false, timeout = 120000, buttonList = null, defaultPage = 0) => {
   if (!msg && !msg.channel) throw new Error("Channel is inaccessible.");
   if (!pages) throw new Error("Pages are not given.");
   if (!buttonList) { // Use default buttons
@@ -40,7 +40,7 @@ const paginationEmbed = async (msg, pages, authorOnly = false, timeout = 120000,
     );
   if (buttonList.length !== 2) throw new Error("Need two buttons.");
 
-  let page = 0;
+  let defaultPage = 0;
 
   const row = new MessageActionRow().addComponents(buttonList);
   const curPage = await msg.channel.send({
