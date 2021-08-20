@@ -56,9 +56,9 @@ exports.run = (client, message) => {
                             // Search author's info
                             for ( var h = 0; h < data.includes.users.length; ++h ) {
                                 if ( data.data[k].author_id === data.includes.users[h].id ) {
-                                    if ( imageCount > 0 ) {
+                                    //if ( imageCount > 0 ) {
                                         imageEmbeds[url] = [data.data[k].id, data.includes.users[h].name, data.includes.users[h].username];
-                                    }
+                                    //}
                                     imageCount++;
 							    }
 						    }
@@ -84,20 +84,19 @@ exports.run = (client, message) => {
             // Add all image embeds to a comment, if there is more than 1
             if ( Object.keys(imageEmbeds).length > 0 ) {
                 //const paginationEmbed = require('./pagination.js');
-                var embedPages = [];
+                //var embedPages = [];
                 var imageString = '';
                 for ( imageUrl in imageEmbeds ) {
                     imageString += "\n" + imageUrl;
                     
-                    const embed = new Discord.MessageEmbed()
+                    /*const embed = new Discord.MessageEmbed()
                                         .setTitle(imageEmbeds[imageUrl][1] + " (@" + imageEmbeds[imageUrl][2] + ")")
 	                                    .setURL("https://twitter.com/tweet/" + imageEmbeds[imageUrl][2] + "/" + imageEmbeds[imageUrl][0] )
                                         .setImage(imageUrl);
-                    embedPages.push(embed);
+                    embedPages.push(embed);*/
 		        }
 		        //paginationEmbed(message, embedPages, false, 300000, 1);
                 message.channel.send(imageString);
-                message.channel.send({embeds: [embedPages]});
             }
         }
         else { 
