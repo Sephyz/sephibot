@@ -96,7 +96,7 @@ exports.run = (client, message) => {
                     embedPages.push(embed);*/
 		        }
 		        //paginationEmbed(message, embedPages, false, 300000, 1);
-                message.channel.send(imageString);
+                message.channel.send({content: imageString, allowedMentions: {repliedUser: false}, reply: { messageReference: message }});
             }
         }
         else { 
