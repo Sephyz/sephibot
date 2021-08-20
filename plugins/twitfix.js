@@ -88,15 +88,16 @@ exports.run = (client, message) => {
                 var imageString = '';
                 for ( imageUrl in imageEmbeds ) {
                     imageString += "\n" + imageUrl;
-                    /*
+                    
                     const embed = new Discord.MessageEmbed()
                                         .setTitle(imageEmbeds[imageUrl][1] + " (@" + imageEmbeds[imageUrl][2] + ")")
 	                                    .setURL("https://twitter.com/tweet/" + imageEmbeds[imageUrl][2] + "/" + imageEmbeds[imageUrl][0] )
                                         .setImage(imageUrl);
-                    embedPages.push(embed);*/
+                    embedPages.push(embed);
 		        }
 		        //paginationEmbed(message, embedPages, false, 300000, 1);
                 message.channel.send(imageString);
+                message.channel.send({embeds: [embedPages]});
             }
         }
         else { 
