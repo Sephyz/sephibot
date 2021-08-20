@@ -36,6 +36,7 @@ exports.run = (client, message) => {
         if ( !data.errors && data.data && data.includes && data.includes.media && data.includes.users ) {
             var twitterIDs = []; // List of tweets to repost
             var imageEmbeds = {}; // Map of image URLs as key to Author info, if more than 1 (to help mobile discord users)
+            var imageCount = 0;
             for ( var j = 0; j < data.includes.media.length; ++j ) {
                 if ( data.includes.media[j].type == "video" || data.includes.media[j].type == "animated_gif" ) {
                     // Found a video/gif, find the tweet id by searching one that contain this video/gif's media key
@@ -55,7 +56,10 @@ exports.run = (client, message) => {
                             // Search author's info
                             for ( var h = 0; h < data.includes.users.length; ++h ) {
                                 if ( data.data[k].author_id === data.includes.users[h].id ) {
-                                    imageEmbeds[url] = [data.data[k].id, data.includes.users[h].name, data.includes.users[h].username];
+                                    if ( imageCount > 0 ) {
+                                        imageEmbeds[url] = [data.data[k].id, data.includes.users[h].name, data.includes.users[h].username];
+                                    }
+                                    imageCount++;
 							    }
 						    }
                         }
@@ -77,18 +81,22 @@ exports.run = (client, message) => {
                 message.suppressEmbeds(true); // Remove original embeds
             }
         
-            // Add all image embeds to an embed with pages to browse through them, if there is more than 1
+            // Add all image embeds to a comment, if there is more than 1
             if ( Object.keys(imageEmbeds).length > 1 ) {
-                const paginationEmbed = require('./pagination.js');
-                var embedPages = [];
+                //const paginationEmbed = require('./pagination.js');
+                //var embedPages = [];
+                var imageString = '';
                 for ( imageUrl in imageEmbeds ) {
+                    imageString += "\n" + "https://twitter.com/tweet/" + imageEmbeds[imageUrl][2] + "/" + imageEmbeds[imageUrl][0];
+                    /*
                     const embed = new Discord.MessageEmbed()
                                         .setTitle(imageEmbeds[imageUrl][1] + " (@" + imageEmbeds[imageUrl][2] + ")")
 	                                    .setURL("https://twitter.com/tweet/" + imageEmbeds[imageUrl][2] + "/" + imageEmbeds[imageUrl][0] )
                                         .setImage(imageUrl);
-                    embedPages.push(embed);
+                    embedPages.push(embed);*/
 		        }
-		        paginationEmbed(message, embedPages, false, 300000, 1);
+		        //paginationEmbed(message, embedPages, false, 300000, 1);
+                message.channel.send(imageString);
             }
         }
         else { 
