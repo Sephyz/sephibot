@@ -82,7 +82,7 @@ exports.run = (client, message) => {
             }
         
             // Add all image embeds to a comment, if there is more than 1
-            if ( Object.keys(imageEmbeds).length > 0 ) {
+            if ( Object.keys(imageEmbeds).length > 1 ) {
                 //const paginationEmbed = require('./pagination.js');
                 //var embedPages = [];
                 var imageString = '';
