@@ -33,11 +33,11 @@ client.on("messageCreate", message => {
 	}
 
     // Substitute twitter links that contain videos with fxtwitter
-    if (message.content.includes("https://twitter.com/")) {
+    /*if (message.content.includes("https://twitter.com/")) {
         let twitFix = require(`./plugins/twitfix.js`);
         twitFix.run(client, message);
         return;
-	}
+	}*/
 
     // Check if the user has called a command and run the relevant .js
     if (message.content.indexOf(process.env.PREFIX) !== 0) return;
